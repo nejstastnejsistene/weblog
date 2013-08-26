@@ -1,5 +1,6 @@
+{% set title = 'First Post' %}
+{% set author = 'John Gruber' %}
 {% extends 'base.html' %}
-{% block title %}First Post{% endblock %}
 {% block content %}
 Markdown
 ========
