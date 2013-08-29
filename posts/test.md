@@ -1,6 +1,6 @@
 {% set title = 'First Post' %}
 {% set author = 'John Gruber' %}
-{% set url = 'custom-url-for-mike.html' %}
+{% set url = 'custom-url.html' %}
 {% extends 'base.html' %}
 {% block content %}
 Markdown

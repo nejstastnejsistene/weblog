@@ -1,8 +1,12 @@
 {
     "posts/test.md": {
         "created": 1377784690, 
-        "edited": null, 
-        "edits": [], 
-        "output": "www/custom-url-for-mike.html"
+        "edited": 1377786985, 
+        "edits": [
+            "Changed url to 'custom-url.html'", 
+            "Changed url to 'test.html'", 
+            "Changed url to 'custom-url.html'"
+        ], 
+        "output": "www/custom-url.html"
     }
 }

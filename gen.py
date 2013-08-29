@@ -71,7 +71,10 @@ with WeblogDB() as db:
             if output != old_output:
                 db[input]['output'] = output
                 if old_output is not None:
-                    os.unlink(old_output)
+                    # Write a redirect file to the old file name.
+                    with open(old_output, 'w+') as f:
+                        t = env.get_template('redirect.html')
+                        f.write(t.render(url=url))
                     db[input]['edited'] = int(time.time())
                     mesg = "Changed url to '{}'".format(url)
                     db[input]['edits'].append(mesg)
