@@ -18,3 +18,10 @@ $ pip install -r requirements.txt
 $ cd www
 $ python -m SimpleHTTPServer
 ```
+
+## Publish to gh-pages
+```
+# First, commit all changes to master.
+git checkout gh-pages
+git merge -s subtree master
+```
