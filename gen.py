@@ -28,7 +28,8 @@ class WeblogDB(dict):
 
     def __exit__(self, *args):
         with open(self.file, 'w+') as f:
-            json.dump(self, f, indent=4, separators=(', ', ': '))
+            json.dump(self, f, indent=4, sort_keys=True,
+                               separators=(', ', ': '))
 
 
 # Create a simple jinja environment.
@@ -82,4 +83,4 @@ with WeblogDB() as db:
 
             # Write the html to the output file.
             with open(output, 'w+') as f:
-                f.write(unicode(module))
+                f.write(unicode(module).lstrip())
