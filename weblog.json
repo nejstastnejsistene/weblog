@@ -1,6 +1,10 @@
 {
-    "www/test.html": {
-        "edited": null, 
-        "created": 1377552402
+    "posts/test.md": {
+        "edited": 1377784153, 
+        "edits": [
+            "Changed url to 'custom-url-for-mike.html'"
+        ], 
+        "output": "www/custom-url-for-mike.html", 
+        "created": 1377784114
     }
 }

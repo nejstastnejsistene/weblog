@@ -45,23 +45,41 @@ with WeblogDB() as db:
     # Iterate through all files in the input directory.
     for dirpath, dirnames, filenames in os.walk(input_dir):
         for filename in filenames:
-            # Calculate the input and output paths.
             input = os.path.join(dirpath, filename)
-            output = input.replace(input_dir, output_dir, 1)
-            output = os.path.splitext(output)[0] + '.html'
 
             # Create a DB entry for new posts.
-            if output not in db:
-                db[output] = { 'created': int(time.time())
-                             , 'edited': None
-                             }
-            namespace = db[output]
+            if input not in db:
+                db[input] = { 'created': int(time.time())
+                            , 'edited': None
+                            , 'edits': []
+                            }
+
+            # Render the template into a module, and determine output path.
+            namespace = db[input]
+            module = env.get_template(input).make_module(namespace)
+
+            # Use explicitly declared url, or else use the input's file name.
+            url = getattr(module, 'url', None)
+            if url is None:
+                url = os.path.basename(input)
+                url = os.path.splitext(url)[0] + '.html'
+            output = os.path.join(output_dir, url)
+
+            # Handle renamed output files.
+            old_output = db[input].get('output')
+            if output != old_output:
+                db[input]['output'] = output
+                if old_output is not None:
+                    os.unlink(old_output)
+                    db[input]['edited'] = int(time.time())
+                    mesg = "Changed url to '{}'".format(url)
+                    db[input]['edits'].append(mesg)
 
             # Make output directories if they don't already exist.
             dirname = os.path.dirname(output)
             if not os.path.exists(dirname):
                 os.makedirs(dirname)
 
-            # Render the html and output it.
+            # Write the html to the output file.
             with open(output, 'w+') as f:
-                f.write(env.get_template(input).render(**namespace))
+                f.write(unicode(module))
