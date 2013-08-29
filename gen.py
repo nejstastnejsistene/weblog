@@ -58,6 +58,7 @@ with WeblogDB() as db:
             # Render the template into a module, and determine output path.
             namespace = db[input]
             module = env.get_template(input).make_module(namespace)
+            db[input]['title'] = module.title
 
             # Use explicitly declared url, or else use the input's file name.
             url = getattr(module, 'url', None)
@@ -67,9 +68,11 @@ with WeblogDB() as db:
             output = os.path.join(output_dir, url)
 
             # Handle renamed output files.
-            old_output = db[input].get('output')
+            old_output = db[input].get('url')
+            if old_output is not None:
+                old_output = os.path.join(output_dir, old_output)
             if output != old_output:
-                db[input]['output'] = output
+                db[input]['url'] = url
                 if old_output is not None:
                     # Write a redirect file to the old file name.
                     with open(old_output, 'w+') as f:
@@ -87,3 +90,9 @@ with WeblogDB() as db:
             # Write the html to the output file.
             with open(output, 'w+') as f:
                 f.write(unicode(module).lstrip())
+
+    # Generate index.html.
+    posts = sorted(db.values(), key=lambda x: x['created'], reverse=True)
+    index = env.get_template('index.html').render(posts=posts)
+    with open('www/index.html', 'w+') as f:
+        f.write(index)
