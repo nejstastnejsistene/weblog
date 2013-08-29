@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+{% filter markdown %}
+foobar
+======
+{% for post in posts %}
+[{{ post['title'] }}]({{ post['url'] }})
+{% endfor %}
+{% endfilter %}
+{% endblock %}

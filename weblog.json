@@ -1,12 +1,16 @@
 {
+    "posts/second-post.md": {
+        "created": 1377789945, 
+        "edited": null, 
+        "edits": [], 
+        "title": "Second Post", 
+        "url": "second-post.html"
+    }, 
     "posts/test.md": {
-        "created": 1377784690, 
-        "edited": 1377786985, 
-        "edits": [
-            "Changed url to 'custom-url.html'", 
-            "Changed url to 'test.html'", 
-            "Changed url to 'custom-url.html'"
-        ], 
-        "output": "www/custom-url.html"
+        "created": 1377789945, 
+        "edited": null, 
+        "edits": [], 
+        "title": "First Post", 
+        "url": "custom-url.html"
     }
 }
