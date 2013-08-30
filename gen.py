@@ -7,6 +7,8 @@ import markdown
 import jinja2
 import json
 
+import bf
+
 
 input_dir = 'posts'
 output_dir = 'www'
@@ -40,6 +42,7 @@ env = jinja2.Environment(loader=loader)
 def formatdate(x, fmt='%c'):
     return datetime.datetime.fromtimestamp(x).strftime(fmt)
 env.filters['markdown'] = markdown.markdown
+env.filters['bf'] = bf.tostring
 env.filters['formatdate'] = formatdate
 
 with WeblogDB() as db:
