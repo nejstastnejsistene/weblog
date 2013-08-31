@@ -49,9 +49,48 @@ def tostring_v2(s, f):
         n = b
 
 
-def tostring(s, func=tostring_v2, linewidth=80):
+def tostring_v3(s, f, n=32, k=256):
+    '''Precompose an array, and start from the cell with the closest value
+       when printing a byte.
+    '''
+    m = k / n;
+    f.write('+'*m)
+    f.write('[')
+    for i in range(1, n):
+        f.write('>')
+        f.write('+'*i)
+    f.write('<'*(n-1))
+    f.write('-]')
+
+    foo = [i for i in range(0, k, k/n)]
+    ptr = 0
+    for b in map(ord, s):
+        i = min(int(float(b) / m + 0.5), n-1)
+        if ptr < i:
+            f.write('>'*(i-ptr))
+        elif ptr > i:
+            f.write('<'*(ptr-i))
+        if foo[i] < b:
+            f.write('+'*(b-foo[i]))
+        elif foo[i] > b:
+            f.write('-'*(foo[i]-b))
+        f.write('.')
+        ptr = i
+        foo[ptr] = b
+
+
+def tostring(s, func=tostring_v3, linewidth=80):
     f = StringIO.StringIO()
     func(s, f)
     bf = f.getvalue()
     # Split into evenly sized lines.
+    if linewidth <= 0:
+        return bf
     return '\n'.join(bf[i:i+linewidth] for i in range(0, len(bf), linewidth))
+
+if __name__ == '__main__':
+    with open('boingboing.html') as f:
+        text = f.read()
+    print len(tostring(text, tostring_v1, 0))
+    print len(tostring(text, tostring_v2, 0))
+    print len(tostring(text, tostring_v3, 0))
